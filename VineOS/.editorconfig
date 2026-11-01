@@ -1,0 +1,47 @@
+root = true
+
+[*]
+charset = utf-8
+end_of_line = lf
+indent_style = space
+insert_final_newline = true
+trim_trailing_whitespace = true
+
+[*.{kt,kts}]
+indent_size = 4
+max_line_length = 140
+
+# android_studio matches this project's actual style. ktlint_official turns
+# on several extra opinionated rules (blank lines before every declaration,
+# forced if/else bracing, etc.) that don't match how this codebase is written.
+ktlint_code_style = android_studio
+
+# Wildcard imports are standard in Compose, e.g. import androidx.compose.material3.*
+ktlint_standard_no-wildcard-imports = disabled
+
+# @Composable functions use PascalCase by convention, same as class names
+ktlint_function_naming_ignore_when_annotated_with = Composable
+
+# Backing properties (_foo / foo pattern), allow private mutable state fields
+ktlint_standard_backing-property-naming = disabled
+
+# Trailing commas are used inconsistently throughout by design (added where
+# they help diffs on long multi-line calls, skipped on short ones); don't
+# enforce either direction.
+ktlint_standard_trailing-comma-on-call-site = disabled
+ktlint_standard_trailing-comma-on-declaration-site = disabled
+
+# Chain formatting (.foo()\n.bar()) is a style choice, not enforced
+ktlint_standard_chain-wrapping = disabled
+
+# Manual alignment (e.g. lining up -> in a when block) is allowed
+ktlint_standard_no-multi-spaces = disabled
+
+# Multiline expression wrapping, let developers break lines where readable
+ktlint_standard_multiline-expression-wrapping = disabled
+
+# Annotations on their own line are a style choice, not required
+ktlint_standard_annotation = disabled
+
+[*.md]
+trim_trailing_whitespace = false
