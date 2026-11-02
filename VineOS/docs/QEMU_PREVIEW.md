@@ -21,7 +21,7 @@ After that test succeeds, stop it and use Скачать Android 5.1 (358 МБ),
 
 ## Limits
 
-Only arm64-v8a hosts have this new payload. The guest is x86, not ARM. ARM-only APKs will not work without a separate translation layer. Live-ISO data is not persisted. Guest audio/networking are disabled for this preview. Speed, Android graphics, long-running stability and installation/boot on POCO F6 have not been verified in the build workspace. The previous container runtime remains unusable without sufficient privileges; this backend bypasses that architecture rather than granting those privileges.
+Only arm64-v8a hosts have this new payload. The guest is x86, not ARM. ARM-only APKs will not work without a separate translation layer. Live-ISO data is not persisted. Guest audio/networking are disabled for this preview. The user confirmed the built-in boot-sector display on POCO F6. Android desktop boot, speed and long-running stability are not verified. The previous container runtime remains unusable without sufficient privileges; this backend bypasses that architecture rather than granting those privileges.
 
 ## Build
 
@@ -40,13 +40,13 @@ The noVNC JavaScript source is already vendored. The executable and firmware/dem
 - Final APK build successful; 83 unit tests, zero failures/errors.
 - Two new tests check software-only launch, loopback binding, no writable guest disk and literal ISO arguments without a shell.
 - All 70 packaged QEMU ELF hashes match bundle.json; their DT_NEEDED closure resolves to packaged libraries or Android platform libraries.
-- Android manifest has extractNativeLibs=true; APK signature verification passed. Version code is 4 and the debug signing certificate matches the previous local debug build.
+- Android manifest has extractNativeLibs=true; APK signature verification passed. Version code is 5 and the debug signing certificate matches the previous local debug build.
 - 84 noVNC relative module imports resolve; custom display JavaScript syntax check passed.
 - The custom boot sector was executed under host Unicorn in x86-16 mode with a BIOS teletype hook; it printed the expected marker. This verifies boot-sector code only, not the Android QEMU executable or WebView integration.
 - Official ISO downloaded and inspected as a bootable Android-x86 5.1 LiveCD; ISO SHA-256 and its VESA boot entry independently checked.
-- On the phone, the native executable reached VNC initialization but the preceding package lacked keymaps/en-us. Version 0.1.2 packages all 34 keymaps, copies firmware recursively and explicitly selects en-us. Guest boot and the fixed display path still need a phone test.
+- On the phone, the native executable reached VNC initialization but the preceding package lacked keymaps/en-us. Version 0.1.2 packages all 34 keymaps, copies firmware recursively and explicitly selects en-us. The subsequent native display path and built-in boot sector were confirmed on the phone in version 0.1.3.
 
-APK SHA-256: `325aca7a8b342a1e12da566fbb1ba0be1a9944ff921259fbde67f720ba2b67b8`.
+Current 0.1.4 APK SHA-256: `f78d5034d1c49f03737677fbc1d7355b3ad2ac069ebabad1958b206b0c54f332`.
 
 ## 0.1.2 startup fix
 
@@ -58,4 +58,12 @@ The WebView display path was replaced with RfbClient and NativeGuestView. The cl
 
 The exact compiled Kotlin RfbClient used by the APK was run on the host against a real Debian QEMU 10.0.13 process with the same machine/firmware/floppy settings (TCG, no KVM). It received a 720x400 frame with 2919 nonblack pixels. QMP confirmed guest CPU execution reached the test boot sector; the captured frame contains VINEOS QEMU TEST OK. This validates protocol decoding and guest configuration on the host, not the Android View rendering on the phone.
 
-The previous browser assets remain in the source tree but are not used by the active viewer. Actual phone display and Android boot remain to be tested.
+The previous browser assets remain in the source tree but are not used by the active viewer. The user subsequently confirmed the test boot-sector text on POCO F6. Android desktop boot remains unverified.
+
+## 0.1.4 viewport and guest CPU fixes
+
+The native display now clips its Canvas drawing to the View bounds; the Compose AndroidView also clips its contents. The previous build could paint over controls outside the guest display area.
+
+The emulated CPU is now `max`, exposing SSSE3 required by Android's x86 ABI; `qemu32` did not expose that feature. Host QMP CPU-model inspection confirmed the difference. This corrects the guest configuration but is not proof of Android boot. All 83 JVM unit tests pass and APK signature verification succeeds with the same debug certificate.
+
+A separate host QEMU test booted the official Android-x86 5.1 kernel with a temporary diagnostic initrd and reached SurfaceFlinger using software rendering. No completed Android desktop has been observed. The diagnostic initrd is not packaged in the APK or substituted for the official ISO. These host tests do not constitute a full APK test in an Android emulator.

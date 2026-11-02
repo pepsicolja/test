@@ -10,7 +10,8 @@ internal object QemuCommand {
             "-L", firmware,
             "-machine", "pc",
             "-accel", "tcg,thread=multi",
-            "-cpu", "qemu32",
+            // Android's x86 ABI requires SSSE3, which qemu32 does not expose.
+            "-cpu", "max",
             "-smp", "2",
             "-m", "768",
             "-no-user-config",

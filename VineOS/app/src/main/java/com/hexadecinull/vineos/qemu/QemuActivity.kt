@@ -12,6 +12,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.ContextCompat
@@ -89,7 +90,7 @@ class QemuActivity : ComponentActivity() {
                     AndroidView(
                         factory = { context -> NativeGuestView(context, QemuEngine::displayStatus).also { viewer = it } },
                         onRelease = { view -> if (viewer === view) viewer = null; view.close() },
-                        modifier = Modifier.fillMaxWidth().weight(1f),
+                        modifier = Modifier.fillMaxWidth().weight(1f).clipToBounds(),
                     )
                 } else {
                     Text(

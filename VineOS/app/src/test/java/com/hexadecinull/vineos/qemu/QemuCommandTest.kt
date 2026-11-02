@@ -7,6 +7,7 @@ class QemuCommandTest {
     @Test fun `rootless launch uses software emulation and loopback display`() {
         val args = QemuCommand.build("/native/qemu.so", "/files/bios", "/files/demo.img", true)
         assertThat(args[args.indexOf("-accel") + 1]).isEqualTo("tcg,thread=multi")
+        assertThat(args[args.indexOf("-cpu") + 1]).isEqualTo("max")
         assertThat(args[args.indexOf("-vnc") + 1]).isEqualTo("127.0.0.1:1,websocket=5701")
         assertThat(args).doesNotContain("-enable-kvm")
         assertThat(args).doesNotContain("su")

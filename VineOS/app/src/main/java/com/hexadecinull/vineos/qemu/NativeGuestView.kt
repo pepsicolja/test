@@ -66,13 +66,20 @@ internal class NativeGuestView(context: Context, private val status: (String) ->
 
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
-        canvas.drawColor(Color.BLACK)
-        val frame = bitmap ?: return
-        val scale = minOf(width.toFloat() / frame.width, height.toFloat() / frame.height)
-        val w = frame.width * scale
-        val h = frame.height * scale
-        bounds.set((width - w) / 2, (height - h) / 2, (width + w) / 2, (height + h) / 2)
-        canvas.drawBitmap(frame, null, bounds, paint)
+        val saved = canvas.save()
+        try {
+            // AndroidView does not automatically clip custom drawing to its bounds.
+            canvas.clipRect(0, 0, width, height)
+            canvas.drawColor(Color.BLACK)
+            val frame = bitmap ?: return
+            val scale = minOf(width.toFloat() / frame.width, height.toFloat() / frame.height)
+            val w = frame.width * scale
+            val h = frame.height * scale
+            bounds.set((width - w) / 2, (height - h) / 2, (width + w) / 2, (height + h) / 2)
+            canvas.drawBitmap(frame, null, bounds, paint)
+        } finally {
+            canvas.restoreToCount(saved)
+        }
     }
 
     override fun onTouchEvent(event: MotionEvent): Boolean {
