@@ -1,0 +1,34 @@
+{
+  "purpose": "Host compatibility fixture; not a packaged VineOS ARM backend",
+  "android": "5.1.1",
+  "api": 22,
+  "guest_abis": [
+    "armeabi-v7a",
+    "armeabi"
+  ],
+  "board": "goldfish",
+  "tested_cpu": "cortex-a8",
+  "archive_url": "https://dl.google.com/android/repository/sys-img/android/armeabi-v7a-22_r02.zip",
+  "archive_bytes": 194596267,
+  "archive_sha1": "2114ec015dbf3a16cbcb4f63e8a84a1b206a07a1",
+  "system_img_sha256": "5a826efb89e39827396bce142bf9896b17be6c8f895a5c004186086674900909",
+  "userdata_template_sha256": "a19b6eff4b76722a99ec40505a5794b3e6ef4bba443779d8afd28607cf8abb8c",
+  "small_files": {
+    "kernel-qemu": {
+      "bytes": 2407928,
+      "sha256": "c0fb84b0ed4444a56abd3201bb1b13b3d8e664d50d604d7b82a54482d1be8bd6"
+    },
+    "ramdisk.img": {
+      "bytes": 806576,
+      "sha256": "293f60c1dc08adfcdfbf2fe4c37f73ab4b75c5a84a9cc25f15001878630715dd"
+    },
+    "build.prop": {
+      "bytes": 2008,
+      "sha256": "c0d2a31afba95db4f73267080cd846fce76c8de54084b1d28b6843a8a45d4d6d"
+    },
+    "source.properties": {
+      "bytes": 179,
+      "sha256": "99f2981a0c20c12e7bf40840581305de0ba832aec5cdd253fb61960b521f5d1d"
+    }
+  }
+}
