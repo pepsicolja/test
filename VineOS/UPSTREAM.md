@@ -2,6 +2,6 @@
 
 Derived from https://github.com/Hexadecinull/VineOS, main commit f72a8cc. Original GPL-3.0 license and attribution are preserved.
 
-Local changes: unique instance IDs and an app-context diagnostic button with Android share-sheet export. No no-root guest runtime or Android 5 image is included. See docs/ANDROID5_NOROOT_STATUS.md for checks and limitations.
+Changes include instance-ID fixes, unprivileged diagnostics and an experimental full-system QEMU backend with a local noVNC display, built-in boot test, ISO import and verified Android-x86 5.1 download. See docs/QEMU_PREVIEW.md and third_party/qemu/README.md for build steps, upstream sources/licenses, checks and limitations.
 
-This source snapshot is kept in the vineos-dev branch of the test repository because the connected GitHub integration could not create a fork (HTTP 403).
+This is an experimental source snapshot, not an official upstream release. Physical-device execution/performance of the new engine remains unverified. No proprietary Virtual Master code is included.

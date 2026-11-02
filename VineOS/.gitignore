@@ -125,3 +125,11 @@ proguard/
 *.orig
 nbproject/
 nbandroid/
+
+# Download cache for the experimental QEMU backend
+.qemu-cache/
+
+# Generated QEMU firmware/demo and Python bytecode
+app/src/main/assets/qemu/
+__pycache__/
+*.pyc

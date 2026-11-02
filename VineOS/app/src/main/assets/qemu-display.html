@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="ru">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+<title>VineOS guest display</title>
+<style>
+html,body{margin:0;width:100%;height:100%;background:#0d1117;color:#dbe6dc;font:13px sans-serif;display:flex;flex-direction:column}
+#toolbar{display:flex;gap:4px;flex-wrap:wrap;padding:4px}button,input{background:#263d2c;color:white;border:1px solid #56725c;border-radius:5px;padding:7px}input{width:110px}#screen{flex:1;min-height:0;overflow:hidden}#status{padding:4px}
+</style>
+<div id="toolbar"><button data-key="0xff0d">Enter</button><button data-key="0xff1b">Esc</button><button data-key="0xff52">↑</button><button data-key="0xff54">↓</button><button data-key="0xff08">⌫</button><input id="text" placeholder="Текст…" autocomplete="off" autocapitalize="off"></div>
+<div id="status">Соединение с гостевой машиной…</div><div id="screen"></div>
+<script type="module">
+import RFB from './novnc/core/rfb.js';
+let rfb, attempts = 0;
+const status = document.getElementById('status');
+function connect() {
+    attempts++;
+    rfb = new RFB(document.getElementById('screen'), 'ws://127.0.0.1:5701');
+    rfb.scaleViewport = true;
+    rfb.resizeSession = false;
+    rfb.addEventListener('connect', () => { status.textContent = 'Экран гостевой машины'; attempts = 0; });
+    rfb.addEventListener('disconnect', () => {
+        status.textContent = 'Нет соединения с QEMU. Если запуск завершился — смотри отчёт приложения.';
+        if (attempts < 20) setTimeout(connect, 1000);
+    });
+    rfb.addEventListener('securityfailure', () => { status.textContent = 'Ошибка локального подключения VNC'; attempts = 20; });
+}
+document.querySelectorAll('[data-key]').forEach(button => {
+    button.addEventListener('click', () => rfb?.sendKey(Number(button.dataset.key)));
+});
+const input = document.getElementById('text');
+input.addEventListener('input', event => {
+    if (event.inputType === 'deleteContentBackward') rfb?.sendKey(0xff08);
+    for (const character of input.value) {
+        const code = character.codePointAt(0);
+        rfb?.sendKey(code <= 255 ? code : 0x01000000 + code);
+    }
+    input.value = '';
+});
+input.addEventListener('keydown', event => {
+    if (event.key === 'Enter') { rfb?.sendKey(0xff0d); event.preventDefault(); }
+});
+connect();
+</script>
+</html>

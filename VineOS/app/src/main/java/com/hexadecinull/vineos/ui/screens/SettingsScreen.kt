@@ -136,6 +136,18 @@ fun SettingsScreen(
                 DeviceDiagnosticsSettings()
             }
 
+            SettingsSection(title = "Экспериментальный движок") {
+                val context = androidx.compose.ui.platform.LocalContext.current
+                NavigateSettingsItem(
+                    icon = Icons.Outlined.DeveloperBoard,
+                    title = "QEMU без root",
+                    subtitle = "Пробная гостевая машина и запуск ISO Android-x86",
+                    onClick = {
+                        context.startActivity(android.content.Intent(context, com.hexadecinull.vineos.qemu.QemuActivity::class.java))
+                    },
+                )
+            }
+
             SettingsSection(title = "About") {
                 NavigateSettingsItem(
                     icon = Icons.Outlined.Info,

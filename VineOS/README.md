@@ -1,3 +1,5 @@
+> **Experimental QEMU preview:** this branch adds an ARM64-host, full-system x86 backend without root or Shizuku. Open Settings → Экспериментальный движок → QEMU без root. It includes a BIOS boot test and Live-ISO support; Android boot/performance on the phone is not yet verified. ARM APK translation and persistent guest storage are not implemented. [Build and test instructions](docs/QEMU_PREVIEW.md).
+
 <div align="center">
 
 # 🌿 VineOS

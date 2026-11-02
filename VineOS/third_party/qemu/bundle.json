@@ -1,0 +1,364 @@
+{
+  "executable": "libvine_qemu_i386.so",
+  "libraries": [
+    "libvine_qemu_i386.so",
+    "libvq_libFLAC_so.so",
+    "libvq_libandroid_execinfo_so.so",
+    "libvq_libandroid_shmem_so.so",
+    "libvq_libandroid_support_so.so",
+    "libvq_libandroid_sysv_semaphore_so.so",
+    "libvq_libargp_so.so",
+    "libvq_libasound_so.so",
+    "libvq_libbz2_so_1_0_8.so",
+    "libvq_libc___shared_so.so",
+    "libvq_libcrypto_so_3.so",
+    "libvq_libcurl_so.so",
+    "libvq_libdb_18_1_so.so",
+    "libvq_libdbus_1_so.so",
+    "libvq_libdw_0_197_so.so",
+    "libvq_libelf_0_197_so.so",
+    "libvq_libfdt_so.so",
+    "libvq_libffi_so.so",
+    "libvq_libgio_2_0_so_0_9000_1.so",
+    "libvq_libglib_2_0_so_0_9000_1.so",
+    "libvq_libgmodule_2_0_so_0_9000_1.so",
+    "libvq_libgmp_so.so",
+    "libvq_libgnutls_so.so",
+    "libvq_libgobject_2_0_so_0_9000_1.so",
+    "libvq_libgstallocators_1_0_so.so",
+    "libvq_libgstapp_1_0_so.so",
+    "libvq_libgstbase_1_0_so.so",
+    "libvq_libgstreamer_1_0_so.so",
+    "libvq_libgstvideo_1_0_so.so",
+    "libvq_libhogweed_so_6_11.so",
+    "libvq_libiconv_so.so",
+    "libvq_libidn2_so.so",
+    "libvq_libjack_so_0_1_0.so",
+    "libvq_libjpeg_so_8_3_2.so",
+    "libvq_liblz4_so.so",
+    "libvq_liblzma_so_5_8_4.so",
+    "libvq_liblzo2_so.so",
+    "libvq_libmp3lame_so.so",
+    "libvq_libmpg123_so.so",
+    "libvq_libncursesw_so_6_5.so",
+    "libvq_libnettle_so_8_11.so",
+    "libvq_libnghttp2_so.so",
+    "libvq_libnghttp3_so.so",
+    "libvq_libngtcp2_crypto_ossl_so.so",
+    "libvq_libngtcp2_so.so",
+    "libvq_libogg_so.so",
+    "libvq_libopus_so.so",
+    "libvq_liborc_0_4_so.so",
+    "libvq_libp11_kit_so.so",
+    "libvq_libpcre2_8_so.so",
+    "libvq_libpixman_1_so.so",
+    "libvq_libpng16_so.so",
+    "libvq_libpulse_so.so",
+    "libvq_libpulsecommon_17_0_so.so",
+    "libvq_libsamplerate_so.so",
+    "libvq_libsasl2_so.so",
+    "libvq_libslirp_so.so",
+    "libvq_libsndfile_so.so",
+    "libvq_libspice_server_so.so",
+    "libvq_libssh2_so.so",
+    "libvq_libssh_so.so",
+    "libvq_libssl_so_3.so",
+    "libvq_libtasn1_so.so",
+    "libvq_libunistring_so.so",
+    "libvq_libusb_1_0_so.so",
+    "libvq_libusbredirparser_so.so",
+    "libvq_libvorbis_so.so",
+    "libvq_libvorbisenc_so.so",
+    "libvq_libz_so_1_3_2.so",
+    "libvq_libzstd_so_1_5_7.so"
+  ],
+  "firmware": [
+    "bios-256k.bin",
+    "bios.bin",
+    "vgabios-stdvga.bin",
+    "kvmvapic.bin"
+  ],
+  "demo_sha256": "6ff8e0fa49407785569795802f687dce61347c8152e1771be5c5d58e196491a7",
+  "files": {
+    "libvine_qemu_i386.so": {
+      "original": "bin/qemu-system-i386",
+      "sha256": "b0663a7e3cc85e6582b2e01d8c3f7978bba512a113fcf809dbd58987d96662a5"
+    },
+    "libvq_libjack_so_0_1_0.so": {
+      "original": "lib/libjack.so.0.1.0",
+      "sha256": "0ba460f8f9824fa1a0cd6f375e06978f25a6bb2dcca5e97ba7ddbcaada2ccab6"
+    },
+    "libvq_libc___shared_so.so": {
+      "original": "lib/libc++_shared.so",
+      "sha256": "17d69356b1a73d8d9e99d90c4aee58fdadec53b9d43d6f264aed307a07f4cf7b"
+    },
+    "libvq_libsamplerate_so.so": {
+      "original": "lib/libsamplerate.so",
+      "sha256": "12a1c26265a45f8d83bb3a8e7e82163c4f4deed47d68713df805a50cb4997c40"
+    },
+    "libvq_libdb_18_1_so.so": {
+      "original": "lib/libdb-18.1.so",
+      "sha256": "a60b42e35c9814b9bc2da2455498292dad8761d48da4cd61b9a205cf58e4b993"
+    },
+    "libvq_libopus_so.so": {
+      "original": "lib/libopus.so",
+      "sha256": "aa48b6a78bdd81a34f77d28d242f4237ebf27c5b5001aafbdf98fdcdaed298a7"
+    },
+    "libvq_libpulse_so.so": {
+      "original": "lib/libpulse.so",
+      "sha256": "f50ecece8c5e0c3cf91ba50fb7d24a4aa73f5af7437c1d08db498ae3fcb63500"
+    },
+    "libvq_libiconv_so.so": {
+      "original": "lib/libiconv.so",
+      "sha256": "8d75bde2d28eb088d378b9c3219c084588a16cc5f86d37e17d4a0486001c94fc"
+    },
+    "libvq_libdbus_1_so.so": {
+      "original": "lib/libdbus-1.so",
+      "sha256": "bfa071dc2818a0bc9142667030b2a3b4da7698c20c7fbe69e8bd7917a94187db"
+    },
+    "libvq_libpulsecommon_17_0_so.so": {
+      "original": "lib/pulseaudio/libpulsecommon-17.0.so",
+      "sha256": "e717f339c4906ff0b750cd61e26f3489a5cb7569138506b102896e8df4f5eeb4"
+    },
+    "libvq_libandroid_execinfo_so.so": {
+      "original": "lib/libandroid-execinfo.so",
+      "sha256": "0ca86e6c2ff769fda0e8ed122758b823a74e04d2c594678f53af98acd55b7d02"
+    },
+    "libvq_libsndfile_so.so": {
+      "original": "lib/libsndfile.so",
+      "sha256": "f515510d5c66b055ccf5a7bcb7194817401e702189022ea7ad39a7423894a31e"
+    },
+    "libvq_libmp3lame_so.so": {
+      "original": "lib/libmp3lame.so",
+      "sha256": "d5a211309b32a4a1b46892a8edb3c62af9cccc5920b419ca8543d0a9e4ebdc85"
+    },
+    "libvq_libmpg123_so.so": {
+      "original": "lib/libmpg123.so",
+      "sha256": "f2c39e5d5baa04a18856935650ceabea287e04c4efa896bb9cc5f40ef976240c"
+    },
+    "libvq_libogg_so.so": {
+      "original": "lib/libogg.so",
+      "sha256": "a8373f248e78de22fe830b0798e43ff2163fbbcda1135c90699c8cb9935c7452"
+    },
+    "libvq_libvorbisenc_so.so": {
+      "original": "lib/libvorbisenc.so",
+      "sha256": "5a2d11b7ce59edd65c3e57649413487c019987487f06e67e8fb74b783bff8d50"
+    },
+    "libvq_libvorbis_so.so": {
+      "original": "lib/libvorbis.so",
+      "sha256": "d060652c54be263c106a7519844a769c87668399bdc941e8a308a2ab23469ded"
+    },
+    "libvq_libFLAC_so.so": {
+      "original": "lib/libFLAC.so",
+      "sha256": "d6d157d9956c1e0320b8714299b42f83d14ce3b3654026500f59ea88bb200e34"
+    },
+    "libvq_libasound_so.so": {
+      "original": "lib/libasound.so",
+      "sha256": "7003f7dcdb576358afa62224214fc42b5856dde55e52e3da7e9ef351ef0f74d3"
+    },
+    "libvq_libandroid_shmem_so.so": {
+      "original": "lib/libandroid-shmem.so",
+      "sha256": "4b1807a04e7500c5260da7ea294aaf811c4adeaf7e664a91e112e0e862d8ec6b"
+    },
+    "libvq_libandroid_sysv_semaphore_so.so": {
+      "original": "lib/libandroid-sysv-semaphore.so",
+      "sha256": "66cc8ef19e02c9e13c272a488847ff0eb91e6e5e18090176bebef6e6da61b97e"
+    },
+    "libvq_libbz2_so_1_0_8.so": {
+      "original": "lib/libbz2.so.1.0.8",
+      "sha256": "b32948b5106c876e36eebc9e9de6afe40e01b681022a841e5628a3be2726cf43"
+    },
+    "libvq_libssh_so.so": {
+      "original": "lib/libssh.so",
+      "sha256": "2c88cf90352526d0de318319e0815122abd1392b1755fedcbb67b00529097133"
+    },
+    "libvq_libz_so_1_3_2.so": {
+      "original": "lib/libz.so.1.3.2",
+      "sha256": "6032b49b17ad1a6653199bd808c97c5e96b1bc111c428dc68303a4572a5fd857"
+    },
+    "libvq_libcrypto_so_3.so": {
+      "original": "lib/libcrypto.so.3",
+      "sha256": "8f787722acf8d81d679e47f3a36fd081c0059ce3eb95b0813a74ef8eb15f4cc8"
+    },
+    "libvq_libcurl_so.so": {
+      "original": "lib/libcurl.so",
+      "sha256": "3ecb09abce9b119e543c78801a6c05489bdf8b2eee473ef6a25cf375f12da444"
+    },
+    "libvq_libssl_so_3.so": {
+      "original": "lib/libssl.so.3",
+      "sha256": "5044df0f694423c95e897d0e8fd7d881b95320b376b433d704d4d95bde541ed3"
+    },
+    "libvq_libssh2_so.so": {
+      "original": "lib/libssh2.so",
+      "sha256": "326f1b38de696be8b7c3985c6fd5c2db7a8ad1f6cb30cdfaf045631daf776603"
+    },
+    "libvq_libnghttp2_so.so": {
+      "original": "lib/libnghttp2.so",
+      "sha256": "3aa41316fb08619146bb632dea236fe7ced3c9217c707cb19fe914271a01a813"
+    },
+    "libvq_libngtcp2_so.so": {
+      "original": "lib/libngtcp2.so",
+      "sha256": "03e403752d5112c14be709daac4a7950ea5118501fb4e6508ca98f750b40ec25"
+    },
+    "libvq_libngtcp2_crypto_ossl_so.so": {
+      "original": "lib/libngtcp2_crypto_ossl.so",
+      "sha256": "3b9bcb3f94d9ebdb3199d1cb4cb7ef0c1aa8695580daea87de55f3a82066ee94"
+    },
+    "libvq_libnghttp3_so.so": {
+      "original": "lib/libnghttp3.so",
+      "sha256": "b86735c1a8ded8646c3038fd7b12e0522ca63c65f05f474f892618cf681d87ba"
+    },
+    "libvq_libhogweed_so_6_11.so": {
+      "original": "lib/libhogweed.so.6.11",
+      "sha256": "cabe8b95ff3e3b8797283f42572dc2341d64d3a259a47e243e4fe7cd42d93eba"
+    },
+    "libvq_libgmp_so.so": {
+      "original": "lib/libgmp.so",
+      "sha256": "3fb2c25821214232f195efba7ea345d0f776efd79123048241eb5fb641556898"
+    },
+    "libvq_libnettle_so_8_11.so": {
+      "original": "lib/libnettle.so.8.11",
+      "sha256": "93d9df6ce77d57f54313ccb08385b320797ddceb5232581802c5ad52d3e8946b"
+    },
+    "libvq_libusb_1_0_so.so": {
+      "original": "lib/libusb-1.0.so",
+      "sha256": "66e1b78e01ec4841e8499486cfb53b839166dd9b205ac24e5875cb9bcc3e7820"
+    },
+    "libvq_libusbredirparser_so.so": {
+      "original": "lib/libusbredirparser.so",
+      "sha256": "63e0e66d092d63b8a9ac4a495b1ba90b7bdc4cf18b1435e6d202aedf0a88f8c9"
+    },
+    "libvq_libgmodule_2_0_so_0_9000_1.so": {
+      "original": "lib/libgmodule-2.0.so.0.9000.1",
+      "sha256": "48202c0910aa64ec6d6ecd150f9cf1d25ed87270127d6d10fb0c449fcc8a29f3"
+    },
+    "libvq_libglib_2_0_so_0_9000_1.so": {
+      "original": "lib/libglib-2.0.so.0.9000.1",
+      "sha256": "cd8a2549589cd0d0cff4049d24b411cd22e11e8810f6f7a2efc78a5b92755265"
+    },
+    "libvq_libpcre2_8_so.so": {
+      "original": "lib/libpcre2-8.so",
+      "sha256": "d33731f12d7e2d4be469791f986b66c42872f4fb3df0868a64c522585b905a40"
+    },
+    "libvq_libandroid_support_so.so": {
+      "original": "lib/libandroid-support.so",
+      "sha256": "7f2ff5a3c02c190151a6d1e3d030b7e96e27ef2adbc6e68e4799f9a8322bb781"
+    },
+    "libvq_libncursesw_so_6_5.so": {
+      "original": "lib/libncursesw.so.6.5",
+      "sha256": "95a92b020f65cf67f0e237a45a91904ef80b083af287b456662e085db07f66d6"
+    },
+    "libvq_libfdt_so.so": {
+      "original": "lib/libfdt.so",
+      "sha256": "04a69bb92e021b6dd8afd786ee27647cca89113a8330abe88da143b326adf640"
+    },
+    "libvq_libdw_0_197_so.so": {
+      "original": "lib/libdw-0.197.so",
+      "sha256": "3facf0a455e1a62dde1e3cfee1231519e8e717dc34401316f0b6a4b555c418f3"
+    },
+    "libvq_liblzma_so_5_8_4.so": {
+      "original": "lib/liblzma.so.5.8.4",
+      "sha256": "f693bc5ec991cc407d13dd2fbd67ccb05abf24a9a11410d8f247bf3e7698b13c"
+    },
+    "libvq_libzstd_so_1_5_7.so": {
+      "original": "lib/libzstd.so.1.5.7",
+      "sha256": "20f3ac8ec64cb8c13cba2508b262213b848b4d95c944d3305cd54101057f27ca"
+    },
+    "libvq_libargp_so.so": {
+      "original": "lib/libargp.so",
+      "sha256": "88419f306f51a5fddfdf034da64855033f5f044ad22edd3ba4fe6aac18cd24d0"
+    },
+    "libvq_libelf_0_197_so.so": {
+      "original": "lib/libelf-0.197.so",
+      "sha256": "b3de0205713c271e0d24789e1720ea218212d1a08c2dc3204cb4c665e57996f0"
+    },
+    "libvq_libslirp_so.so": {
+      "original": "lib/libslirp.so",
+      "sha256": "0c0c02f2e63f419d8daa1b98eb58215290e1a34050d18fba4f1889f35be5f2fb"
+    },
+    "libvq_libspice_server_so.so": {
+      "original": "lib/libspice-server.so",
+      "sha256": "7439e0cbf04d57dee62f12efb5f29f0a0238fd84b9faf413ce29392294a7e92b"
+    },
+    "libvq_liborc_0_4_so.so": {
+      "original": "lib/liborc-0.4.so",
+      "sha256": "ed100a512ad03569285e50a6b5bfafa0672397431b9121a8f399389f5d3fa9b9"
+    },
+    "libvq_libgobject_2_0_so_0_9000_1.so": {
+      "original": "lib/libgobject-2.0.so.0.9000.1",
+      "sha256": "088492a6ac53696d2e7500c53338dfd795251b686f985f285f25bd001523f7ce"
+    },
+    "libvq_libffi_so.so": {
+      "original": "lib/libffi.so",
+      "sha256": "d122f3fcea733c3c28d946a4fab5359240c50c2e023e8a5a9560fe34967d2bab"
+    },
+    "libvq_libgstreamer_1_0_so.so": {
+      "original": "lib/libgstreamer-1.0.so",
+      "sha256": "ef8d2394fa4d58ff8376118e7750cf943256a108c12734aa6f16fb5dae9c575f"
+    },
+    "libvq_libgstallocators_1_0_so.so": {
+      "original": "lib/libgstallocators-1.0.so",
+      "sha256": "cbeeadf26f26762250d928fd60eb572847987d3b9d1e8e6906856f470e8729fa"
+    },
+    "libvq_libgstbase_1_0_so.so": {
+      "original": "lib/libgstbase-1.0.so",
+      "sha256": "3ac82257cbe5bd2408e1cbe96b8c15d039b6840a5b4257587f7e8963f4c9a215"
+    },
+    "libvq_libgstvideo_1_0_so.so": {
+      "original": "lib/libgstvideo-1.0.so",
+      "sha256": "db1ffedd7e36b665ebf5cf8bea01e3580092316612fdf72c56a29c52dbcd02ba"
+    },
+    "libvq_libgstapp_1_0_so.so": {
+      "original": "lib/libgstapp-1.0.so",
+      "sha256": "0f9379bc565ca4883659a8ba36c62da532cfcb71bea4eff07215f7d672eeedb4"
+    },
+    "libvq_libsasl2_so.so": {
+      "original": "lib/libsasl2.so",
+      "sha256": "ad047e29aaea24f49fecc3b3159dda3b0c4a65bc31839b0488d1109ed452d072"
+    },
+    "libvq_libpixman_1_so.so": {
+      "original": "lib/libpixman-1.so",
+      "sha256": "e0a7017e12f48958445d28f32401874acb4e060a0002debd8c72a6b11b4ec367"
+    },
+    "libvq_liblz4_so.so": {
+      "original": "lib/liblz4.so",
+      "sha256": "ef799fc99019cfe8bdbfaf2f365ab12887a203692562a167fdca9a2e297f1aee"
+    },
+    "libvq_libjpeg_so_8_3_2.so": {
+      "original": "lib/libjpeg.so.8.3.2",
+      "sha256": "492d5b7a7644711a4e8f08683a79d5bd8ec66fc756ffea772fb6e78d0198043b"
+    },
+    "libvq_libgio_2_0_so_0_9000_1.so": {
+      "original": "lib/libgio-2.0.so.0.9000.1",
+      "sha256": "cb6ae391da4c83c167082059aff977abf59f40ce34e2c0e489f9905592ef9f19"
+    },
+    "libvq_liblzo2_so.so": {
+      "original": "lib/liblzo2.so",
+      "sha256": "89273b7988012efc8ac9e9f8b5bbebfc6e992ea0f7dcee3c9628b975836d2719"
+    },
+    "libvq_libpng16_so.so": {
+      "original": "lib/libpng16.so",
+      "sha256": "78c35f1f43e8876b2b56871727592426bfa946222a5285cd6670fe7301348b83"
+    },
+    "libvq_libgnutls_so.so": {
+      "original": "lib/libgnutls.so",
+      "sha256": "50f6c645e5b4bca54183b9c4f9e7f7f40de22d8a8af58904019fa96e9d232666"
+    },
+    "libvq_libtasn1_so.so": {
+      "original": "lib/libtasn1.so",
+      "sha256": "239cf5f98d14878544e15e87d629472eef3a22c239b9497bc86f07d105fcb2ec"
+    },
+    "libvq_libunistring_so.so": {
+      "original": "lib/libunistring.so",
+      "sha256": "7cf164b4fa83d9b75d67d991997fdbc0d0490f61ea00ffbe72860fa3185e1f0b"
+    },
+    "libvq_libidn2_so.so": {
+      "original": "lib/libidn2.so",
+      "sha256": "a6720fe36d4369c1723d4308e200068ce707b8c0cab6bb7331d26df2be7e677d"
+    },
+    "libvq_libp11_kit_so.so": {
+      "original": "lib/libp11-kit.so",
+      "sha256": "3bd4448bae2ecb76a75641967abcfad7acd35529d0dea6db21f1efa44e1f64c8"
+    }
+  }
+}

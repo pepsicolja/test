@@ -25,8 +25,8 @@ android {
         applicationId = "com.hexadecinull.vineos"
         minSdk = 26
         targetSdk = 37
-        versionCode = 1
-        versionName = "0.1.0-alpha"
+        versionCode = 2
+        versionName = "0.1.1-qemu-preview"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
@@ -108,6 +108,13 @@ android {
     }
 
     packaging {
+        jniLibs {
+            // QEMU is a PIE executable installed as a native library. Android must
+            // extract it into the executable, package-managed native library dir.
+            useLegacyPackaging = true
+            keepDebugSymbols += "**/libvq_*.so"
+            keepDebugSymbols += "**/libvine_qemu_i386.so"
+        }
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
