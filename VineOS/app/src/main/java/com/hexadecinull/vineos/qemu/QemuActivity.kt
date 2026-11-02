@@ -1,13 +1,7 @@
 package com.hexadecinull.vineos.qemu
 
-import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
-import android.webkit.WebResourceRequest
-import android.webkit.WebResourceResponse
-import android.webkit.WebSettings
-import android.webkit.WebView
-import android.webkit.WebViewClient
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
@@ -22,7 +16,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.ContextCompat
 import com.hexadecinull.vineos.ui.theme.VineOSTheme
-import java.io.ByteArrayInputStream
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
@@ -34,11 +27,11 @@ class QemuActivity : ComponentActivity() {
         setContent { VineOSTheme { QemuScreen() } }
     }
 
-    @SuppressLint("SetJavaScriptEnabled")
     @Composable
     private fun QemuScreen() {
         val state by QemuEngine.state.collectAsState()
         val scope = rememberCoroutineScope()
+        var viewer by remember { mutableStateOf<NativeGuestView?>(null) }
         var download by remember { mutableStateOf<Job?>(null) }
         LaunchedEffect(Unit) { QemuEngine.refresh(applicationContext) }
         val picker = rememberLauncherForActivityResult(ActivityResultContracts.OpenDocument()) { uri ->
@@ -78,43 +71,24 @@ class QemuActivity : ComponentActivity() {
                 }
                 Text(state.message, style = MaterialTheme.typography.bodyMedium)
                 if (state.running) {
-                    AndroidView(
-                        factory = { context ->
-                            WebView(context).apply {
-                                settings.javaScriptEnabled = true
-                                settings.allowFileAccess = false
-                                settings.allowContentAccess = false
-                                settings.mixedContentMode = WebSettings.MIXED_CONTENT_ALWAYS_ALLOW
-                                webViewClient = object : WebViewClient() {
-                                    override fun shouldOverrideUrlLoading(view: WebView, request: WebResourceRequest): Boolean =
-                                        request.url.host != "appassets.androidplatform.net"
-
-                                    override fun shouldInterceptRequest(view: WebView, request: WebResourceRequest): WebResourceResponse {
-                                        val uri = request.url
-                                        val path = uri.path.orEmpty()
-                                        if (uri.scheme != "https" || uri.host != "appassets.androidplatform.net" ||
-                                            !path.startsWith("/assets/") || path.split('/').any { it == ".." } || path.contains('\\')) {
-                                            return WebResourceResponse("text/plain", "UTF-8", 403, "Forbidden", emptyMap(), ByteArrayInputStream(byteArrayOf()))
-                                        }
-                                        return try {
-                                            val name = path.removePrefix("/assets/")
-                                            val type = when (name.substringAfterLast('.')) {
-                                                "html" -> "text/html"
-                                                "js" -> "application/javascript"
-                                                "css" -> "text/css"
-                                                "svg" -> "image/svg+xml"
-                                                else -> "application/octet-stream"
-                                            }
-                                            WebResourceResponse(type, "UTF-8", assets.open(name))
-                                        } catch (_: Exception) {
-                                            WebResourceResponse("text/plain", "UTF-8", 404, "Not found", emptyMap(), ByteArrayInputStream(byteArrayOf()))
-                                        }
-                                    }
-                                }
-                                loadUrl("https://appassets.androidplatform.net/assets/qemu-display.html")
-                            }
+                    Row(horizontalArrangement = Arrangement.spacedBy(4.dp)) {
+                        for ((label, key) in listOf("Enter" to 0xff0d, "Esc" to 0xff1b, "↑" to 0xff52, "↓" to 0xff54, "⌫" to 0xff08)) {
+                            OutlinedButton(onClick = { viewer?.key(key) }, modifier = Modifier.weight(1f), contentPadding = PaddingValues(4.dp)) { Text(label) }
+                        }
+                    }
+                    OutlinedTextField(
+                        value = "",
+                        onValueChange = { value ->
+                            value.codePoints().forEach { code -> viewer?.key(if (code <= 255) code else 0x01000000 + code) }
                         },
-                        onRelease = { it.destroy() },
+                        label = { Text("Ввод текста") },
+                        singleLine = true,
+                        modifier = Modifier.fillMaxWidth(),
+                    )
+                    Text(state.display, style = MaterialTheme.typography.bodySmall)
+                    AndroidView(
+                        factory = { context -> NativeGuestView(context, QemuEngine::displayStatus).also { viewer = it } },
+                        onRelease = { view -> if (viewer === view) viewer = null; view.close() },
                         modifier = Modifier.fillMaxWidth().weight(1f),
                     )
                 } else {
@@ -132,7 +106,7 @@ class QemuActivity : ComponentActivity() {
                 TextButton(onClick = {
                     startActivity(Intent.createChooser(Intent(Intent.ACTION_SEND).apply {
                         type = "text/plain"
-                        putExtra(Intent.EXTRA_TEXT, "VineOS QEMU preview\n${state.message}\n${state.log}")
+                        putExtra(Intent.EXTRA_TEXT, "VineOS QEMU preview\n${state.message}\n${state.display}\n${state.log}")
                     }, "Отчёт QEMU"))
                 }) { Text("Поделиться отчётом") }
             }

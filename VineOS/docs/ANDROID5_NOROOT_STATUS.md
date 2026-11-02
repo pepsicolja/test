@@ -7,3 +7,5 @@ The device tests rejected the original namespace-container path both as an ordin
 An ARM64-host QEMU preview is now packaged: BIOS boot test, local display/input, ISO import and SHA-256-verified Android-x86 5.1 download. See QEMU_PREVIEW.md for precise implemented behavior, tests and known limits. The phone reached QEMU VNC initialization, exposing a missing en-us keymap in the first package. Version 0.1.2 packages and installs the keymaps; successful guest boot is still not claimed. Guest architecture is x86; ARM APK support, persistent guest data and performance work remain outstanding.
 
 Earlier diagnostic improvements (direct app-context probe, report sharing and unique instance IDs) are retained. Virtual Master native code has not been copied; its static analysis is in virtual-master-static-analysis.md.
+
+Version 0.1.3 replaces the WebView viewer with native RFB/Android Canvas. The compiled protocol client received the expected test image from real host QEMU; phone rendering of this new version and Android boot are still unverified.

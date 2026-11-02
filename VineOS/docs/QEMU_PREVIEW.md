@@ -14,7 +14,7 @@ After that test succeeds, stop it and use Скачать Android 5.1 (358 МБ),
 - Packaged ARM64 QEMU full-system i386 executable and 69 dependent ELF libraries, with PC BIOS/VGA firmware.
 - Android-managed executable extraction; no execution of binaries downloaded into writable app storage.
 - Explicit TCG software emulation, 2 guest CPUs, 768 MiB RAM; no KVM, mount, namespace or Shizuku calls.
-- Local VNC/WebSocket display through bundled noVNC source; both endpoints bind only to 127.0.0.1. No remote webpage is loaded.
+- Native RFB client receives raw true-colour frames over 127.0.0.1:5901; Android Canvas draws the guest bitmap directly. There is no WebView in the active display path.
 - Touch/pointer display, text input and boot-menu keys; foreground service and stop control.
 - Built-in boot floppy, ISO import and cancellable official Android-x86 image download with SHA-256 verification.
 - Bounded process error log and manual share-sheet export.
@@ -37,10 +37,10 @@ The noVNC JavaScript source is already vendored. The executable and firmware/dem
 
 ## Validation
 
-- Final APK build successful; 82 unit tests, zero failures/errors.
+- Final APK build successful; 83 unit tests, zero failures/errors.
 - Two new tests check software-only launch, loopback binding, no writable guest disk and literal ISO arguments without a shell.
 - All 70 packaged QEMU ELF hashes match bundle.json; their DT_NEEDED closure resolves to packaged libraries or Android platform libraries.
-- Android manifest has extractNativeLibs=true; APK signature verification passed. Version code is 3 and the debug signing certificate matches the previous local debug build.
+- Android manifest has extractNativeLibs=true; APK signature verification passed. Version code is 4 and the debug signing certificate matches the previous local debug build.
 - 84 noVNC relative module imports resolve; custom display JavaScript syntax check passed.
 - The custom boot sector was executed under host Unicorn in x86-16 mode with a BIOS teletype hook; it printed the expected marker. This verifies boot-sector code only, not the Android QEMU executable or WebView integration.
 - Official ISO downloaded and inspected as a bootable Android-x86 5.1 LiveCD; ISO SHA-256 and its VESA boot entry independently checked.
@@ -51,3 +51,11 @@ APK SHA-256: `325aca7a8b342a1e12da566fbb1ba0be1a9944ff921259fbde67f720ba2b67b8`.
 ## 0.1.2 startup fix
 
 QEMU VNC initialization requires firmware/keymaps/en-us. The payload-preparation script now packages the complete keymaps directory; the runtime recursively copies it alongside BIOS files before starting QEMU and validates the required layout exists. This fixes the concrete missing-data failure, rather than changing privileges or emulation settings.
+
+## 0.1.3 native display
+
+The WebView display path was replaced with RfbClient and NativeGuestView. The client supports RFB 3.8, true-colour raw updates, DesktopSize changes, key events and pointer events; frame dimensions and rectangle bounds are validated before allocation/copying. A loopback-server test verifies handshake and pixel decoding.
+
+The exact compiled Kotlin RfbClient used by the APK was run on the host against a real Debian QEMU 10.0.13 process with the same machine/firmware/floppy settings (TCG, no KVM). It received a 720x400 frame with 2919 nonblack pixels. QMP confirmed guest CPU execution reached the test boot sector; the captured frame contains VINEOS QEMU TEST OK. This validates protocol decoding and guest configuration on the host, not the Android View rendering on the phone.
+
+The previous browser assets remain in the source tree but are not used by the active viewer. Actual phone display and Android boot remain to be tested.

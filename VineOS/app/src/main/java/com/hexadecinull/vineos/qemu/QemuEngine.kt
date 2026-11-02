@@ -24,11 +24,15 @@ internal data class QemuState(
     val imageReady: Boolean = false,
     val message: String = "Готов к пробному запуску",
     val log: String = "",
+    val display: String = "",
 )
 
 internal object QemuEngine {
     private val mutable = MutableStateFlow(QemuState())
     val state = mutable.asStateFlow()
+    fun displayStatus(message: String) {
+        mutable.update { it.copy(display = message) }
+    }
     private val stopped = AtomicBoolean(false)
     @Volatile private var process: Process? = null
 
