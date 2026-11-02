@@ -40,10 +40,14 @@ The noVNC JavaScript source is already vendored. The executable and firmware/dem
 - Final APK build successful; 82 unit tests, zero failures/errors.
 - Two new tests check software-only launch, loopback binding, no writable guest disk and literal ISO arguments without a shell.
 - All 70 packaged QEMU ELF hashes match bundle.json; their DT_NEEDED closure resolves to packaged libraries or Android platform libraries.
-- Android manifest has extractNativeLibs=true; APK signature verification passed. Version code is 2 and the debug signing certificate matches the previous local debug build.
+- Android manifest has extractNativeLibs=true; APK signature verification passed. Version code is 3 and the debug signing certificate matches the previous local debug build.
 - 84 noVNC relative module imports resolve; custom display JavaScript syntax check passed.
 - The custom boot sector was executed under host Unicorn in x86-16 mode with a BIOS teletype hook; it printed the expected marker. This verifies boot-sector code only, not the Android QEMU executable or WebView integration.
 - Official ISO downloaded and inspected as a bootable Android-x86 5.1 LiveCD; ISO SHA-256 and its VESA boot entry independently checked.
-- Physical Android-device execution remains unverified.
+- On the phone, the native executable reached VNC initialization but the preceding package lacked keymaps/en-us. Version 0.1.2 packages all 34 keymaps, copies firmware recursively and explicitly selects en-us. Guest boot and the fixed display path still need a phone test.
 
 APK SHA-256: `325aca7a8b342a1e12da566fbb1ba0be1a9944ff921259fbde67f720ba2b67b8`.
+
+## 0.1.2 startup fix
+
+QEMU VNC initialization requires firmware/keymaps/en-us. The payload-preparation script now packages the complete keymaps directory; the runtime recursively copies it alongside BIOS files before starting QEMU and validates the required layout exists. This fixes the concrete missing-data failure, rather than changing privileges or emulation settings.

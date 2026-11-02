@@ -22,6 +22,7 @@ internal object QemuCommand {
             "-monitor", "none",
             "-audiodev", "none,id=silent",
             "-display", "none",
+            "-k", "en-us",
             "-vnc", "127.0.0.1:1,websocket=$WEBSOCKET_PORT",
         ) + if (demo) {
             listOf("-drive", "file=$image,format=raw,if=floppy,readonly=on", "-boot", "a")

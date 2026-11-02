@@ -25,8 +25,8 @@ android {
         applicationId = "com.hexadecinull.vineos"
         minSdk = 26
         targetSdk = 37
-        versionCode = 2
-        versionName = "0.1.1-qemu-preview"
+        versionCode = 3
+        versionName = "0.1.2-qemu-keymap-fix"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 

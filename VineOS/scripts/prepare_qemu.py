@@ -88,11 +88,12 @@ for file,deps in closure.items():
 assets=repo/'app/src/main/assets/qemu';firmware=assets/'firmware';firmware.mkdir(parents=True,exist_ok=True)
 for name in ['bios-256k.bin','bios.bin','vgabios-stdvga.bin','kvmvapic.bin']:
  shutil.copy2(root/'usr/share/qemu'/name,firmware/name)
+shutil.copytree(root/'usr/share/qemu/keymaps', firmware/'keymaps', dirs_exist_ok=True)
 code=bytes.fromhex('fa31c08ed88ed0bc007cfbb80300cd10be')+struct.pack('<H',0x7c00+37)+bytes.fromhex('ac84c07409b40ebb0700cd10ebf2fbf4ebfc')
 assert len(code)==37
 message=b'VINEOS QEMU TEST OK\r\n\r\nGuest x86 code is running inside QEMU.\r\nNo root. No Shizuku.\r\n\r\nThis is a boot test, not Android yet.\r\n\x00'
 image=bytearray(1474560);image[:len(code+message)]=code+message;image[510:512]=b'\x55\xaa';(assets/'demo.img').write_bytes(image)
-manifest={'executable':mapping[entry],'libraries':sorted(mapping.values()),'firmware':['bios-256k.bin','bios.bin','vgabios-stdvga.bin','kvmvapic.bin'],'demo_sha256':hashlib.sha256(image).hexdigest(),'files':{mapping[k]:{'original':str(Path(k).relative_to(root/'usr')),'sha256':hashlib.file_digest(open(out/mapping[k],'rb'),'sha256').hexdigest()} for k in mapping}}
+manifest={'executable':mapping[entry],'libraries':sorted(mapping.values()),'firmware':sorted(str(p.relative_to(firmware)) for p in firmware.rglob('*') if p.is_file()),'demo_sha256':hashlib.sha256(image).hexdigest(),'files':{mapping[k]:{'original':str(Path(k).relative_to(root/'usr')),'sha256':hashlib.file_digest(open(out/mapping[k],'rb'),'sha256').hexdigest()} for k in mapping}}
 (repo/'third_party/qemu/bundle.json').write_text(json.dumps(manifest,indent=2))
 print('Bundled',len(mapping),'ELFs, boot firmware and boot test')
 # Check that all static dependencies resolve to packaged or Android NDK libraries.

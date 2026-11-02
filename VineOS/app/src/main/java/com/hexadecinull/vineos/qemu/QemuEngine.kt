@@ -119,6 +119,16 @@ internal object QemuEngine {
         Files.move(temp.toPath(), destination.toPath(), StandardCopyOption.REPLACE_EXISTING)
     }
 
+    private fun assetTree(context: Context, name: String, destination: File) {
+        val children = context.assets.list("qemu/$name").orEmpty()
+        if (children.isEmpty()) {
+            asset(context, name, destination)
+        } else {
+            check(destination.isDirectory || destination.mkdirs()) { "Не удалось создать ${destination.name}" }
+            for (child in children) assetTree(context, "$name/$child", File(destination, child))
+        }
+    }
+
     /** Called once by the foreground service on an IO thread. */
     fun run(context: Context, demo: Boolean) {
         stopped.set(false)
@@ -131,9 +141,8 @@ internal object QemuEngine {
             require(binary.canExecute()) { "QEMU не извлечён установщиком: ${binary.name}" }
             val dir = directory(context)
             val firmware = File(dir, "firmware").also { it.mkdirs() }
-            for (name in context.assets.list("qemu/firmware").orEmpty()) {
-                asset(context, "firmware/$name", File(firmware, name))
-            }
+            assetTree(context, "firmware", firmware)
+            require(File(firmware, "keymaps/en-us").isFile) { "В сборке отсутствует раскладка QEMU en-us" }
             val image = if (demo) File(dir, "demo.img").also { asset(context, "demo.img", it) } else iso(context)
             require(image.isFile) { "Сначала выбери ISO Android-x86" }
             if (stopped.get()) return

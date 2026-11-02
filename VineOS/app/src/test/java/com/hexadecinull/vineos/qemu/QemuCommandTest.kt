@@ -11,6 +11,7 @@ class QemuCommandTest {
         assertThat(args).doesNotContain("-enable-kvm")
         assertThat(args).doesNotContain("su")
         assertThat(args[args.indexOf("-nic") + 1]).isEqualTo("none")
+        assertThat(args[args.indexOf("-k") + 1]).isEqualTo("en-us")
     }
 
     @Test fun `ISO path is a literal argument and live boot has no writable disk`() {
