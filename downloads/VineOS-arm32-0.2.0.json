@@ -1,0 +1,10 @@
+{
+  "file": "VineOS-arm32-0.2.0.apk",
+  "sha256": "2535cfa90a7aea90637da8cfd2c263d5c536ba9a916c2a496c3ea77cf36bbe53",
+  "bytes": 50964930,
+  "versionCode": 6,
+  "source": "https://github.com/pepsicolja/test/tree/1dbfb3a/VineOS",
+  "unit_tests_passed": 86,
+  "phone_runtime_verified": false,
+  "guest": "Android 5.1 ARM32 / Ranchu"
+}
