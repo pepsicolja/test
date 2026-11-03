@@ -107,7 +107,7 @@ static struct audio_driver driver = {
     .name = "aaudio", .descr = "VineOS Android AAudio output", .options = NULL,
     .init = init_audio, .fini = fini_audio, .pcm_ops = &pcm_ops,
     .can_be_default = 1, .max_voices_out = 8, .max_voices_in = 0,
-    .voice_size_out = sizeof(VineAudioOut), .voice_size_in = sizeof(HWVoiceIn),
+    .voice_size_out = sizeof(VineAudioOut), .voice_size_in = 0,
 };
 static void register_driver(void) { audio_driver_register(&driver); }
 type_init(register_driver);

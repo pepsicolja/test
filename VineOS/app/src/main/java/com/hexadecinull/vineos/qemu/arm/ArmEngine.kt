@@ -128,6 +128,7 @@ internal object ArmEngine {
                 }
                 val files = ArmFiles(context)
                 check(files.ready) { "Сначала подготовь Android" }
+                files.prepareRuntime()
                 val display = surface
                 check(display != null && display.isValid) { "Экран ещё не готов" }
                 QemuEngine.stop()
@@ -177,7 +178,8 @@ internal object ArmEngine {
             }
             active.inputStream.bufferedReader().useLines { lines -> lines.forEach(::log) }
             val code = active.waitFor()
-            message("Гость остановлен (код $code)")
+            val detail = state.value.log.lineSequence().lastOrNull { it.isNotBlank() }.orEmpty().take(240)
+            message(if (code == 0) "Гость остановлен" else "Гость остановлен (код $code)\n$detail")
         } catch (cancel: CancellationException) {
             throw cancel
         } catch (error: Exception) { message(error.message ?: "Не удалось запустить Android") }

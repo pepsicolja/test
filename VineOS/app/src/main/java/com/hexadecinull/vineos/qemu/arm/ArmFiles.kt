@@ -20,11 +20,24 @@ internal class ArmFiles(context: Context) {
     val data get() = File(root, "userdata.img")
     val cache get() = File(root, "cache.img")
     val kernel get() = File(root, "kernel-ranchu")
+    val runtime get() = File(root, "runtime")
     val ramdisk get() = File(root, "ramdisk.img")
     val ready: Boolean get() = runCatching {
         File(root, "ready").readText() == IMAGE_ID &&
             listOf(system, data, cache, kernel, ramdisk).all { it.isFile && it.length() > 0 }
     }.getOrDefault(false)
+
+    fun prepareRuntime() {
+        val maps = File(runtime, "keymaps")
+        check(maps.isDirectory || maps.mkdirs()) { "Не удалось подготовить раскладки ввода" }
+        val names = context.assets.list("qemu/firmware/keymaps").orEmpty()
+        check("en-us" in names) { "В APK отсутствует раскладка en-us" }
+        for (name in names) {
+            context.assets.open("qemu/firmware/keymaps/$name").use { input ->
+                File(maps, name).outputStream().use { input.copyTo(it) }
+            }
+        }
+    }
 
     suspend fun prepare(status: (String) -> Unit) {
         if (ready) return

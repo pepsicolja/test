@@ -5,7 +5,7 @@
   "api": 28,
   "files_before_gradle_stripping": {
     "libvine_qemu_arm.so": {
-      "sha256": "684d34ca96f884bac84dd1fb57c13acbe5272044ca0fad7bf7f86744ced2153d",
+      "sha256": "0add69e7c0eeae5cb054d61afe7edb167cc00521c16c4e8909f692b17969c4c2",
       "needed": [
         "libvq_libz_so_1_3_2.so",
         "libaaudio.so",

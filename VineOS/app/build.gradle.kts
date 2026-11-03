@@ -25,8 +25,8 @@ android {
         applicationId = "com.hexadecinull.vineos"
         minSdk = 26
         targetSdk = 37
-        versionCode = 7
-        versionName = "0.2.1-arm32-preview"
+        versionCode = 8
+        versionName = "0.2.2-arm32-preview"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 

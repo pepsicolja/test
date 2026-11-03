@@ -18,3 +18,9 @@ The new engine's null standalone SLIRP proxy callback crash was reproduced under
 This is not a test of the final APK running on the Poco F6. The Android ARM64 CPU executable and public-NDK Surface/GLES JNI module are cross-compiled; actual Adreno rendering, app lifecycle/Surface reattachment, sound and speed still need a physical-device check. The new Ranchu check establishes installation and a foreground rendered game scene, not long-play FPS or audible audio. Earlier Goldfish gameplay evidence does not substitute for phone verification.
 
 The Android ROM/kernel and user APK are downloaded or selected by the user at runtime, not bundled. Writable userdata is retained between launches. The app refuses to prepare a new guest over an existing data directory.
+
+## First physical-device startup report
+
+On the Poco F6/Android 16, the public Surface renderer initialized with Qualcomm Adreno 735 (OpenGL ES-CM 1.1 reported for the compositor context). The guest CPU then exited before boot because its VNC input initialization could not locate `en-us`. Version 0.2.2 copies the packaged QEMU keymaps into a private runtime directory on each start and explicitly passes `-L` to the ARM engine. A real host-engine VNC initialization check using those exact packaged keymaps passes. This report does not establish Android guest boot or gameplay on the phone.
+
+The output-only AAudio backend also incorrectly declared a nonzero capture voice size while supporting zero capture voices. The declaration is corrected to zero; the backend does not request microphone input.

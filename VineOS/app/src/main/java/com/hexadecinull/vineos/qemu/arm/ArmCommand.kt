@@ -7,7 +7,7 @@ internal object ArmCommand {
     const val RFB_PORT = 5901
 
     fun build(binary: String, files: ArmFiles, adbPort: Int): List<String> = listOf(
-        binary, "-machine", "ranchu", "-cpu", "cortex-a15",
+        binary, "-L", files.runtime.absolutePath, "-machine", "ranchu", "-cpu", "cortex-a15",
         "-accel", "tcg,thread=multi", "-smp", "2", "-m", "768",
         "-nodefaults", "-no-user-config", "-display", "none",
         "-global", "goldfish_fb.width=$WIDTH", "-global", "goldfish_fb.height=$HEIGHT",

@@ -15,4 +15,6 @@ with zipfile.ZipFile(args.apk) as apk:
    size+=len(chunk);digest.update(chunk)
  assert size==info['size'] and digest.hexdigest()==info['sha256'], 'Packaged cache image checksum mismatch'
  assert 'assets/arm32/licenses/NOTICE.txt' in apk.namelist()
+ assert 'assets/qemu/firmware/keymaps/en-us' in apk.namelist(), 'Missing QEMU VNC keymap'
+ assert len([n for n in apk.namelist() if n.startswith('assets/qemu/firmware/keymaps/')]) >= 40
  print('Packaged ARM32 asset path, gzip stream, image size and SHA256: PASS')
