@@ -67,7 +67,7 @@ internal class ArmFiles(context: Context) {
             status("Дополнительные файлы Android…")
             downloadKernel(File(stage, "kernel-ranchu"))
             val cacheInfo = manifest.getJSONObject("cache.img")
-            GZIPInputStream(context.assets.open("arm32/cache.img.gz")).use { source ->
+            GZIPInputStream(context.assets.open("arm32/cache.img.bin")).use { source ->
                 sparse(source, File(stage, "cache.img"), cacheInfo.getLong("size"), cacheInfo.getString("sha256"))
             }
             // The full factory image hash was verified above. This is the pinned
