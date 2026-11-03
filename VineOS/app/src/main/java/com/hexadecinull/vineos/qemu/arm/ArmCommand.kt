@@ -8,7 +8,7 @@ internal object ArmCommand {
 
     fun build(binary: String, files: ArmFiles, adbPort: Int): List<String> = listOf(
         binary, "-L", files.runtime.absolutePath, "-machine", "ranchu", "-cpu", "cortex-a15",
-        "-accel", "tcg,thread=multi", "-smp", "2", "-m", "768",
+        "-accel", "tcg,thread=single", "-smp", "1", "-m", "768",
         "-nodefaults", "-no-user-config", "-display", "none",
         "-global", "goldfish_fb.width=$WIDTH", "-global", "goldfish_fb.height=$HEIGHT",
         "-vnc", "127.0.0.1:1", "-monitor", "none", "-serial", "stdio",

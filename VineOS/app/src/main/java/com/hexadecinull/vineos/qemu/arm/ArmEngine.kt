@@ -158,7 +158,7 @@ internal object ArmEngine {
             }
             rfb = client
             inputJob = worker.launch {
-                runCatching { client.run() }.onFailure { if (active.isAlive) log("Input: ${it.message}") }
+                runCatching { client.run() }.onFailure { if (active.isAlive) log("Input: ${it.javaClass.simpleName}: ${it.message.orEmpty()}") }
             }
             bootJob = worker.launch {
                 while (active.isAlive) {
@@ -179,7 +179,11 @@ internal object ArmEngine {
             active.inputStream.bufferedReader().useLines { lines -> lines.forEach(::log) }
             val code = active.waitFor()
             val detail = state.value.log.lineSequence().lastOrNull { it.isNotBlank() }.orEmpty().take(240)
-            message(if (code == 0) "Гость остановлен" else "Гость остановлен (код $code)\n$detail")
+            message(when (code) {
+                0 -> "Гость остановлен"
+                132 -> "Движок остановлен (SIGILL). Поделись отчётом о сбое."
+                else -> "Гость остановлен (код $code)\n$detail"
+            })
         } catch (cancel: CancellationException) {
             throw cancel
         } catch (error: Exception) { message(error.message ?: "Не удалось запустить Android") }

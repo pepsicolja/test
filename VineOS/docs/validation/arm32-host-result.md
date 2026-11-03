@@ -24,3 +24,9 @@ The Android ROM/kernel and user APK are downloaded or selected by the user at ru
 On the Poco F6/Android 16, the public Surface renderer initialized with Qualcomm Adreno 735 (OpenGL ES-CM 1.1 reported for the compositor context). The guest CPU then exited before boot because its VNC input initialization could not locate `en-us`. Version 0.2.2 copies the packaged QEMU keymaps into a private runtime directory on each start and explicitly passes `-L` to the ARM engine. A real host-engine VNC initialization check using those exact packaged keymaps passes. This report does not establish Android guest boot or gameplay on the phone.
 
 The output-only AAudio backend also incorrectly declared a nonzero capture voice size while supporting zero capture voices. The declaration is corrected to zero; the backend does not request microphone input.
+
+## Android ARM64 SIGILL investigation (0.2.3 diagnostics)
+
+The 0.2.2 phone report progresses into Linux 3.10 boot and then the host engine terminates with exit 132 (normally SIGILL). It also records CPU1 boot failure -19; this is separate evidence that the two-vCPU profile is not supported by the current guest/kernel combination. It is not a measurement of slow gameplay or a verified cause of SIGILL.
+
+The diagnostic profile uses one vCPU and single-threaded TCG. The Android AArch64 engine installs a bounded SIGILL handler that writes PC/LR/SP, CPU ELF base, TCG region bounds and four instruction words when PC is inside its known readable JIT region. It then exits immediately; it does not resume execution or claim to fix the illegal instruction. The real handler is exercised with a deliberate SIGILL in a disposable Linux subprocess, validating its report fields and exit status. Physical-device confirmation and the actual fault address are still required.

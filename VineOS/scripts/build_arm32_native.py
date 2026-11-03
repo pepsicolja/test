@@ -50,7 +50,7 @@ def main():
         assert hashlib.sha256(makefile).hexdigest() == '520515a9a0ce3c7e23bc6bb8d7d7cad0f80e1972e4780419a066b65a25771481'
         (src/'Makefile').write_bytes(makefile)
         run('patch', '-p1', '-i', REPO/'third_party/arm32-engine/engine.patch', cwd=src)
-        for name, dest in [('vine_gles_pipe.c','hw/misc'), ('goldfish_pipe.h','include/hw/misc'), ('vine_aaudio.c','audio')]:
+        for name, dest in [('vine_gles_pipe.c','hw/misc'), ('goldfish_pipe.h','include/hw/misc'), ('vine_aaudio.c','audio'), ('vine_crash.h','tcg')]:
             shutil.copy2(REPO/'third_party/arm32-engine'/name, src/dest/name)
         run('git', 'config', 'submodule.dtc.url', 'https://github.com/dgibson/dtc.git', cwd=src)
         run('git', 'config', 'submodule.ui/keycodemapdb.url', 'https://gitlab.com/qemu-project/keycodemapdb.git', cwd=src)

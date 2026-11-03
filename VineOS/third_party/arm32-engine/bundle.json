@@ -1,11 +1,11 @@
 {
   "host": "arm64-v8a",
-  "guest": "ARMv7 Cortex-A15 / Ranchu, Android 5.1.1",
+  "guest": "ARMv7 Cortex-A15 / Ranchu, Android 5.1.1, one vCPU diagnostic profile",
   "ndk": "28.2.13676358",
   "api": 28,
   "files_before_gradle_stripping": {
     "libvine_qemu_arm.so": {
-      "sha256": "0add69e7c0eeae5cb054d61afe7edb167cc00521c16c4e8909f692b17969c4c2",
+      "sha256": "062c69fd3fd756e4bb22be9b79338fbda2102d2a07ea89534e5c3fbe0ff70c2c",
       "needed": [
         "libvq_libz_so_1_3_2.so",
         "libaaudio.so",

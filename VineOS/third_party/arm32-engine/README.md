@@ -24,3 +24,7 @@ python3 scripts/build_arm32_native.py \
 The builder checks out the exact CPU revision, applies the provided patch, compiles the NDK CPU executable and GLES JNI library, and resolves the pinned shared libraries. It uses the same NDK STL as the app. It does not download proprietary GPU drivers. Keep the dependencies' license notices when distributing a build.
 
 Important fixes: null Android proxy hooks in standalone SLIRP teardown; absent async-sync service/device aliasing ARM exception vectors; Android openpty portability; GLES connector/socket wakeups; configurable framebuffer size. Disk insertion is deliberately reversed to match this fork's FDT enumeration. See `docs/ARM32_GUEST.md` for validation scope.
+
+## SIGILL diagnostic build
+
+`vine_crash.h` installs a host-only Android AArch64 SIGILL report in TCG initialization. It records bounded register/JIT instruction data using an async-signal-safe handler and exits; it is not a crash recovery mechanism. `python3 scripts/check_native_crash_report.py` exercises the handler on Linux x86-64 in a disposable process. The 0.2.3 profile uses one guest core/single-threaded TCG because the phone kernel report rejects CPU1. This diagnostic change is not confirmation that the reported SIGILL is resolved.

@@ -174,6 +174,26 @@ index 331a3b2..65bac02 100644
        slirp_proxy->try_connect(&addr, tcp_on_proxy_connection, so)) {
  	soisfconnecting(so);
  	so->s = -1;
+diff --git a/tcg/tcg.c b/tcg/tcg.c
+index bb24526..e77f31f 100644
+--- a/tcg/tcg.c
++++ b/tcg/tcg.c
+@@ -44,6 +44,7 @@
+ #include "exec/exec-all.h"
+ 
+ #include "tcg-op.h"
++#include "vine_crash.h"
+ 
+ #if UINTPTR_MAX == UINT32_MAX
+ # define ELF_CLASS  ELFCLASS32
+@@ -674,6 +675,7 @@ static TCGTemp *tcg_global_reg_new_internal(TCGContext *s, TCGType type,
+ 
+ void tcg_context_init(TCGContext *s)
+ {
++    vine_install_crash_handler();
+     int op, total_args, n, i;
+     TCGOpDef *def;
+     TCGArgConstraint *args_ct;
 diff --git a/util/qemu-openpty.c b/util/qemu-openpty.c
 index 2e8b43b..67cc8ab 100644
 --- a/util/qemu-openpty.c
