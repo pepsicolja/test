@@ -7,6 +7,7 @@ the screen. It does not claim playable speed, sound, or phone compatibility.
 import argparse
 import hashlib
 import json
+import re
 from pathlib import Path
 import subprocess
 import time
@@ -23,7 +24,7 @@ def main():
     expected = "a3e6958ce2100966f4e207778e4cdbe72788214148c7f4bfd042ba365498deb3"
     if hashlib.sha256(args.apk.read_bytes()).hexdigest() != expected:
         parser.error("APK differs from the inspected, user-supplied fixture")
-    if not args.serial.startswith("emulator-"):
+    if not (args.serial.startswith("emulator-") or re.fullmatch(r"127\.0\.0\.1:\d{1,5}", args.serial)):
         parser.error("This host test requires an explicit local emulator serial")
     args.out.mkdir(parents=True, exist_ok=True)
 
@@ -59,6 +60,7 @@ def main():
     (args.out / "package.txt").write_text(package)
     if "primaryCpuAbi=armeabi" not in package:
         raise RuntimeError("Package manager has not confirmed an ARM ABI")
+    adb("logcat", "-c")
     adb("shell", "input", "keyevent", "82")
     launch = adb("shell", "am", "start", "-W", "-n", "com.dotgears.flappybird/com.dotgears.flappy.SplashScreen")
     (args.out / "launch.txt").write_text(launch)

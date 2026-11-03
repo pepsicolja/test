@@ -44,6 +44,12 @@ python3 scripts/check_flappy_arm32.py \
 
 The check waits for `sys.boot_completed=1`, verifies the guest and installed package use ARM32, installs the exact inspected APK, launches its activity, records graphics/logcat output and captures a PNG. It does not automatically claim playable speed, audio or a working phone backend. See `docs/validation/flappybird-apk.md` for the APK requirements.
 
-## Remaining phone implementation
+## Integrated Android backend (0.2.0 preview)
 
-VineOS currently packages an i386 system emulator only. A phone-compatible ARM64-host engine with the required Goldfish devices and GLES 2.0 bridge must be built and integrated before this image can run inside VineOS. The image, kernel, emulated board and graphics transport form one compatible set. Renaming an executable, replacing the CPU flag, or swapping the ISO is insufficient. Phone rendering, input, guest APK import, writable storage and sound must then be verified separately.
+Settings → Экспериментальный движок → Android 5.1 ARM32 opens the new backend. It uses an ARM64-host, ARM32-guest QEMU Ranchu build with software TCG, a public Android Surface/EGL/GLES bridge, loopback input, a foreground service and private persistent guest disks. It needs neither root nor Shizuku. The old PC ISO backend is retained in source for reference.
+
+Tap «Подготовить Android» once (186 MiB archive plus a 3 MB kernel archive prefix), then «Запустить». After Android reports ready, choose «Установить APK» and select an original ARM32 APK. Installation happens inside the Android 5 guest; Android 16's host installer is not used for that APK. Back/Home buttons control the guest. Data is retained; do not clear the app's storage if you want to preserve it.
+
+The default API22 archive contains Ranchu userspace HALs but only a Goldfish kernel. The app separately downloads the verified Ranchu kernel from the official API22 r26 archive. It patches the guest's init script to expose its local ADB import service, and applies the guarded EGL compatibility fix to the verified system image. Nothing is patched in selected application APKs. ROM and kernel are not embedded in the distributable app.
+
+Native build instructions and pinned source: `third_party/arm32-engine/README.md`, `third_party/arm32-renderer/source.json`, `scripts/build_arm32_native.py`. Current validation and its physical-device limits: [arm32-host-result.md](validation/arm32-host-result.md). The original game now installs and reaches its resumed game activity through the actual app transport in the new server-host engine test.

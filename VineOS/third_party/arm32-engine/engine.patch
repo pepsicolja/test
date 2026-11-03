@@ -1,0 +1,189 @@
+diff --git a/audio/Makefile.objs b/audio/Makefile.objs
+index f1cea02..40f486e 100644
+--- a/audio/Makefile.objs
++++ b/audio/Makefile.objs
+@@ -30,3 +30,5 @@ common-obj-$(CONFIG_AUDIO_SDL) += sdl.mo
+ sdl.mo-objs = sdlaudio.o
+ sdl.mo-cflags := $(SDL_CFLAGS)
+ sdl.mo-libs := $(SDL_LIBS)
++
++common-obj-$(CONFIG_VINE_ANDROID_AUDIO) += vine_aaudio.o
+diff --git a/default-configs/arm-softmmu.mak b/default-configs/arm-softmmu.mak
+index dd29e74..5c53e5f 100644
+--- a/default-configs/arm-softmmu.mak
++++ b/default-configs/arm-softmmu.mak
+@@ -149,3 +149,5 @@ CONFIG_PCI_DESIGNWARE=y
+ CONFIG_STRONGARM=y
+ CONFIG_HIGHBANK=y
+ CONFIG_MUSICPAL=y
++
++CONFIG_GOLDFISH=y
+diff --git a/disas/arm-a64.cc b/disas/arm-a64.cc
+index 9280950..e56f876 100644
+--- a/disas/arm-a64.cc
++++ b/disas/arm-a64.cc
+@@ -17,8 +17,9 @@
+  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  */
+ 
+-extern "C" {
+ #include "qemu/osdep.h"
++
++extern "C" {
+ #include "disas/bfd.h"
+ }
+ 
+diff --git a/hw/arm/ranchu.c b/hw/arm/ranchu.c
+index 6eb02e1..f4e3be0 100644
+--- a/hw/arm/ranchu.c
++++ b/hw/arm/ranchu.c
+@@ -560,9 +560,14 @@ static void ranchu_init(MachineState *machine)
+     create_simple_device(vbi, pic, RANCHU_GOLDFISH_PIPE, "goldfish_pipe",
+                          "google,android-pipe\0"
+                          "generic,android-pipe", 2, 0, 0);
++#ifdef CONFIG_ANDROID
++    /* Requires Android's async fence service. The standalone synchronous
++     * GLES bridge does not register that service or this device. In this
++     * fork the missing map entry also aliases the ARM exception vectors. */
+     create_simple_device(vbi, pic, RANCHU_GOLDFISH_SYNC, "goldfish_sync",
+                          "google,goldfish-sync\0"
+                          "generic,goldfish-sync", 2, 0, 0);
++#endif
+ 
+     /* Create mmio transports, so the user can create virtio backends
+      * (which will be automatically plugged in to the transports). If
+diff --git a/hw/display/goldfish_fb.c b/hw/display/goldfish_fb.c
+index b6c0817..f2c5677 100644
+--- a/hw/display/goldfish_fb.c
++++ b/hw/display/goldfish_fb.c
+@@ -12,6 +12,8 @@
+ #include "qemu/osdep.h"
+ #include "framebuffer.h"
+ #include "hw/hw.h"
++#include "hw/qdev-properties.h"
++#include "qemu/error-report.h"
+ #include "hw/sysbus.h"
+ #include "ui/console.h"
+ #include "ui/pixel_ops.h"
+@@ -96,6 +98,8 @@ enum {
+ struct goldfish_fb_state {
+     SysBusDevice parent;
+ 
++    uint32_t width;
++    uint32_t height;
+     QemuConsole *con;
+     MemoryRegion iomem;
+     qemu_irq irq;
+@@ -518,6 +522,12 @@ static int goldfish_fb_init(SysBusDevice *sbdev)
+ 
+     s->con = graphic_console_init(dev, 0, &goldfish_fb_ops, s);
+ 
++    if (s->width < 64 || s->height < 64 || s->width > 4096 || s->height > 4096) {
++        error_report("goldfish framebuffer dimensions outside 64..4096");
++        return -1;
++    }
++    qemu_console_resize(s->con, s->width, s->height);
++
+     s->dpi = 165;  /* TODO: Find better way to get actual value ! */
+ 
+     s->format = HAL_PIXEL_FORMAT_RGB_565;
+@@ -532,6 +542,12 @@ static int goldfish_fb_init(SysBusDevice *sbdev)
+     return 0;
+ }
+ 
++static Property goldfish_fb_properties[] = {
++    DEFINE_PROP_UINT32("width", struct goldfish_fb_state, width, 320),
++    DEFINE_PROP_UINT32("height", struct goldfish_fb_state, height, 480),
++    DEFINE_PROP_END_OF_LIST(),
++};
++
+ static void goldfish_fb_class_init(ObjectClass *klass, void *data)
+ {
+     DeviceClass *dc = DEVICE_CLASS(klass);
+@@ -539,6 +555,7 @@ static void goldfish_fb_class_init(ObjectClass *klass, void *data)
+ 
+     k->init = goldfish_fb_init;
+     dc->desc = "goldfish framebuffer";
++    dc->props = goldfish_fb_properties;
+ }
+ 
+ static const TypeInfo goldfish_fb_info = {
+diff --git a/hw/misc/Makefile.objs b/hw/misc/Makefile.objs
+index d111c46..0a743d2 100644
+--- a/hw/misc/Makefile.objs
++++ b/hw/misc/Makefile.objs
+@@ -76,3 +76,5 @@ obj-$(CONFIG_GOLDFISH) += goldfish_sync.o
+ obj-$(CONFIG_GOLDFISH) += goldfish_pstore.o
+ obj-y += mmio_interface.o
+ obj-$(CONFIG_MSF2) += msf2-sysreg.o
++
++obj-$(CONFIG_GOLDFISH) += vine_gles_pipe.o
+diff --git a/hw/misc/goldfish_pipe.c b/hw/misc/goldfish_pipe.c
+index 97eaf4e..31ab5ce 100755
+--- a/hw/misc/goldfish_pipe.c
++++ b/hw/misc/goldfish_pipe.c
+@@ -1666,7 +1666,12 @@ static void goldfish_pipe_post_load(void* opaque) {
+ 
+ static GoldfishPipeState* s_goldfish_pipe_state = NULL;
+ 
++void vine_gles_pipe_register(void);
++
+ static void goldfish_pipe_realize(DeviceState* dev, Error** errp) {
++#ifndef CONFIG_ANDROID
++    vine_gles_pipe_register();
++#endif
+     SysBusDevice* sbdev = SYS_BUS_DEVICE(dev);
+     GoldfishPipeState* s = GOLDFISH_PIPE(dev);
+     s_goldfish_pipe_state = s;
+diff --git a/slirp/misc.c b/slirp/misc.c
+index c6ad76d..9330b5e 100644
+--- a/slirp/misc.c
++++ b/slirp/misc.c
+@@ -146,7 +146,7 @@ fork_exec(struct socket *so, const char *ex, int do_pty)
+ 		dup2(s, 0);
+ 		dup2(s, 1);
+ 		dup2(s, 2);
+-		for (s = getdtablesize() - 1; s >= 3; s--)
++		for (s = (int)sysconf(_SC_OPEN_MAX) - 1; s >= 3; s--)
+ 		   close(s);
+ 
+ 		i = 0;
+diff --git a/slirp/socket.c b/slirp/socket.c
+index 8b73c95..df98506 100644
+--- a/slirp/socket.c
++++ b/slirp/socket.c
+@@ -92,7 +92,7 @@ sofree(struct socket *so)
+   soqfree(so, &slirp->if_fastq);
+   soqfree(so, &slirp->if_batchq);
+ 
+-  if (so->so_state) {
++  if (so->so_state && slirp_proxy && slirp_proxy->remove) {
+ 	slirp_proxy->remove(so);
+   }
+ 
+diff --git a/slirp/tcp_subr.c b/slirp/tcp_subr.c
+index 331a3b2..65bac02 100644
+--- a/slirp/tcp_subr.c
++++ b/slirp/tcp_subr.c
+@@ -448,7 +448,7 @@ int tcp_fconnect(struct socket *so, unsigned short af)
+   DEBUG_CALL(" connect()ing")
+   sotranslate_out(so, &addr);
+ 
+-  if (http_proxy_on &&
++  if (http_proxy_on && slirp_proxy && slirp_proxy->try_connect &&
+       slirp_proxy->try_connect(&addr, tcp_on_proxy_connection, so)) {
+ 	soisfconnecting(so);
+ 	so->s = -1;
+diff --git a/util/qemu-openpty.c b/util/qemu-openpty.c
+index 2e8b43b..67cc8ab 100644
+--- a/util/qemu-openpty.c
++++ b/util/qemu-openpty.c
+@@ -35,7 +35,7 @@
+ #include "qemu/osdep.h"
+ #include "qemu-common.h"
+ 
+-#if defined(__GLIBC__)
++#if defined(__GLIBC__) || defined(__ANDROID__)
+ # include <pty.h>
+ #elif defined CONFIG_BSD
+ # include <termios.h>

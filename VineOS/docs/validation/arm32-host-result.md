@@ -1,29 +1,20 @@
-# ARM32 host result, 2026-11-02
+# ARM32 engine validation, 2026-11-03
 
-## Confirmed
+## Confirmed on this server
 
-- Official API22 revision 2 ARM image reaches a visible Android 5.1.1 desktop.
-- ADB sys.boot_completed=1; primary guest ABI armeabi-v7a.
-- SurfaceFlinger reports: Google (Mesa), Android Emulator OpenGL ES Translator (llvmpipe (LLVM 19.1.7, 256 bits)), OpenGL ES 2.0 (4.5 (Compatibility Profile) Mesa 25.0.7-2+deb13u1).
-- The supplied Flappy Bird 1.3 APK installs unchanged; package manager selects primaryCpuAbi=armeabi-v7a.
-- libandengine.so loads, with the expected legacy text-relocation warning.
+The original supplied Flappy Bird 1.3 APK (SHA256 `a3e6958ce2100966f4e207778e4cdbe72788214148c7f4bfd042ba365498deb3`) is unchanged. No game code, resources, ABI libraries or APK signature was modified.
 
-## Failed app check
+1. Google's historical Goldfish Linux engine boots the official Android 5.1.1 API22 ARM32 image. The original game initially failed in its AndEngine EGL configuration fallback.
+2. The guest EGL driver incorrectly returned EGL_FALSE for an empty successful config query. The source patch changes `<= 0` to `< 0`; a guarded one-byte Thumb patch applies that exact behavior to the verified image. Twelve Unicorn instruction tests preserve negative and positive behavior and fix zero. After this change, the original game reached its menu, Get Ready and Game Over screens, and responded to taps.
+3. The new standalone Ranchu engine, built from the same source as the Android CPU payload, also boots this userspace with the pinned Ranchu kernel and our GLES pipe bridge. A Linux-host build was used here; graphics use the same stream decoder and a host-only Mesa/SDK translator adapter.
+4. The actual Kotlin GuestAdb class used in the app queried `armeabi-v7a`, pushed a 28 KB file, read it back byte-for-byte and deleted it. A persistent serialized transport is necessary for the old daemon.
+5. That same Kotlin transport pushed the original 915558-byte APK and ran `pm install -r`: Success. The game's activity started with Status: ok; after 15 seconds the resumed foreground activity was `com.dotgears.GameActivity`. AndEngine created its GLES2 scene using RGB565/depth24/stencil8 without the old fallback exception.
+6. Native socket tests exercise the real GLES pipe with ASAN/UBSAN: fragmented connector, binary reads/writes, wakeups, backpressure, EOF and invalid service/port rejection pass.
 
-The splash activity reports Status: ok, then com.dotgears.GameActivity crashes on its GL thread:
+The new engine's null standalone SLIRP proxy callback crash was reproduced under GDB and fixed. Abrupt closing of the ADB handshake no longer terminated the engine. Standalone async sync-device creation was disabled: this fork has no MMIO map for it and its Android fence callbacks are not installed. Two guest Cortex-A15 CPUs/TCG and 768 MiB were used in the final transport/game launch check. Cold app startup/installation took several minutes on the shared server.
 
-```text
-java.lang.IllegalArgumentException: EGLCONFIG_FALLBACK failed!
- at org.andengine.opengl.view.a.chooseConfig
- at android.opengl.GLSurfaceView$EglHelper.start
-```
+## What this does not establish
 
-Static inspection shows that this game enables AndEngine multisampling. Its chooser first tries 2-sample MSAA, then NVIDIA coverage-sampling attributes (0x30e0/0x30e1), then a plain config. The fallback path throws when eglChooseConfig returns false. This identifies a graphics-configuration compatibility issue; it does not by itself establish which queried attribute the driver rejected. No patched APK has been used to claim success.
+This is not a test of the final APK running on the Poco F6. The Android ARM64 CPU executable and public-NDK Surface/GLES JNI module are cross-compiled; actual Adreno rendering, app lifecycle/Surface reattachment, sound and speed still need a physical-device check. The new Ranchu check establishes installation and a foreground rendered game scene, not long-play FPS or audible audio. Earlier Goldfish gameplay evidence does not substitute for phone verification.
 
-The original test checked only the launch command and captured a screenshot, which is insufficient: after the crash the image shows Launcher. The smoke test now also checks the resumed foreground activity and fails if the game has returned to Launcher.
-
-## Limits
-
-This test uses Google's Linux x86-64 host emulator with an ARM32 guest. It validates the image/ABI and exposes an app compatibility failure. It is not a test of an ARM backend inside the phone APK. Guest sound output was disabled, performance was not benchmarked, and gameplay is not verified.
-
-Desktop evidence: [arm32-host-desktop.png](arm32-host-desktop.png).
+The Android ROM/kernel and user APK are downloaded or selected by the user at runtime, not bundled. Writable userdata is retained between launches. The app refuses to prepare a new guest over an existing data directory.

@@ -140,10 +140,10 @@ fun SettingsScreen(
                 val context = androidx.compose.ui.platform.LocalContext.current
                 NavigateSettingsItem(
                     icon = Icons.Outlined.DeveloperBoard,
-                    title = "QEMU без root",
-                    subtitle = "Пробная гостевая машина и запуск ISO Android-x86",
+                    title = "Android 5.1 ARM32",
+                    subtitle = "Старые ARM-приложения · без root · отдельный Android",
                     onClick = {
-                        context.startActivity(android.content.Intent(context, com.hexadecinull.vineos.qemu.QemuActivity::class.java))
+                        context.startActivity(android.content.Intent(context, com.hexadecinull.vineos.qemu.arm.ArmVmActivity::class.java))
                     },
                 )
             }

@@ -50,6 +50,15 @@
                 android:value="Software-emulated guest PC for Android-x86" />
         </service>
 
+        <activity android:name=".qemu.arm.ArmVmActivity" android:exported="false"
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:windowSoftInputMode="adjustResize" />
+        <service android:name=".qemu.arm.ArmVmService" android:exported="false"
+            android:foregroundServiceType="specialUse">
+            <property android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE"
+                android:value="Software-emulated ARM32 Android for legacy applications" />
+        </service>
+
         <!-- Main activity -->
         <activity
             android:name=".MainActivity"

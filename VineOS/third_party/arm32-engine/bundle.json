@@ -1,0 +1,41 @@
+{
+  "host": "arm64-v8a",
+  "guest": "ARMv7 Cortex-A15 / Ranchu, Android 5.1.1",
+  "ndk": "28.2.13676358",
+  "api": 28,
+  "files_before_gradle_stripping": {
+    "libvine_qemu_arm.so": {
+      "sha256": "684d34ca96f884bac84dd1fb57c13acbe5272044ca0fad7bf7f86744ced2153d",
+      "needed": [
+        "libvq_libz_so_1_3_2.so",
+        "libaaudio.so",
+        "libvq_libpixman_1_so.so",
+        "libm.so",
+        "libva_gthread.so",
+        "libvq_libglib_2_0_so_0_9000_1.so",
+        "libc++_shared.so",
+        "libdl.so",
+        "libc.so"
+      ]
+    },
+    "libvine_gles_bridge.so": {
+      "sha256": "0e4acc16274df1c4563064afa652dff12917a7d4de90fb97b72333e5154d614f",
+      "needed": [
+        "libdl.so",
+        "liblog.so",
+        "libandroid.so",
+        "libc++_shared.so",
+        "libm.so",
+        "libc.so"
+      ]
+    },
+    "libva_gthread.so": {
+      "sha256": "ea9e785bd15b3f65cc93bef9d23e9b41fd2c2b7f4536771ece9478189c0604be",
+      "needed": [
+        "libvq_libandroid_support_so.so",
+        "libvq_libglib_2_0_so_0_9000_1.so",
+        "libc.so"
+      ]
+    }
+  }
+}

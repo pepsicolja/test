@@ -25,8 +25,8 @@ android {
         applicationId = "com.hexadecinull.vineos"
         minSdk = 26
         targetSdk = 37
-        versionCode = 5
-        versionName = "0.1.4-viewport-fix"
+        versionCode = 6
+        versionName = "0.2.0-arm32-preview"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
@@ -114,6 +114,7 @@ android {
             useLegacyPackaging = true
             keepDebugSymbols += "**/libvq_*.so"
             keepDebugSymbols += "**/libvine_qemu_i386.so"
+            keepDebugSymbols += "**/libvine_qemu_arm.so"
         }
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"

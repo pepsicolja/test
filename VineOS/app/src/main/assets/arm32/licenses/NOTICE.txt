@@ -1,0 +1,12 @@
+VineOS ARM32 experimental backend
+
+CPU: QEMU 2.12 Android fork, GPLv2 or later. Copyright Fabrice Bellard and the QEMU/AOSP contributors. Exact revision, all custom sources and patches, dependency notices and build instructions accompany this build in:
+https://github.com/pepsicolja/test/tree/vineos-dev/VineOS/third_party/arm32-engine
+
+Graphics stream renderer: AOSP 2011 host OpenGL renderer (Apache License 2.0), pinned source revision df0de0daad1fd9452503348e267c5cb34c74e944 from jianglin-code/qemu-of-arm-android. Copyright (C) 2011 The Android Open Source Project. Khronos EGL/GLES headers retain their original notices. NativeAndroidWindow.cpp and BridgeJni.cpp: Apache-2.0.
+https://www.apache.org/licenses/LICENSE-2.0
+https://github.com/pepsicolja/test/tree/vineos-dev/VineOS/third_party/arm32-renderer
+
+The selected Android SDK image is downloaded directly from Google and used subject to its SDK image license. Its NOTICE.txt is retained in the private guest directory. The kernel is also downloaded directly; neither is included in this APK. Selected user APKs are not modified or included in VineOS distribution.
+
+Shared dependencies and their corresponding source references: third_party/qemu/packages.json and third_party/qemu/README.md in the source distribution.

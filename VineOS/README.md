@@ -1,4 +1,4 @@
-> **Experimental QEMU preview:** this branch adds an ARM64-host, full-system x86 backend without root or Shizuku. Open Settings → Экспериментальный движок → QEMU без root. It includes a BIOS boot test and Live-ISO support; Android boot/performance on the phone is not yet verified. ARM APK translation and persistent guest storage are not implemented. [Build and test instructions](docs/QEMU_PREVIEW.md).
+> **ARM32 preview 0.2.0:** Settings → Экспериментальный движок → Android 5.1 ARM32. A full software-emulated ARM32 Android 5.1 guest with persistent storage and guest APK import, without root or Shizuku. Original Flappy Bird installs and launches in the server-host test; the final Android APK still needs physical-device GPU/lifecycle/audio validation. [Setup and scope](docs/ARM32_GUEST.md).
 
 <div align="center">
 

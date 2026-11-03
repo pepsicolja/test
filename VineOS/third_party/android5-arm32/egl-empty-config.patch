@@ -1,0 +1,18 @@
+Source: device/generic/goldfish/opengl/system/egl/egl.cpp
+Base: android-5.1.1_r38
+https://android.googlesource.com/device/generic/goldfish/+/android-5.1.1_r38/opengl/system/egl/egl.cpp
+
+eglChooseConfig may successfully find zero matches. Return EGL_TRUE so callers
+can try a less restrictive configuration. Preserve negative-result failure.
+
+--- a/opengl/system/egl/egl.cpp
++++ b/opengl/system/egl/egl.cpp
+@@ -603,7 +603,7 @@ EGLBoolean eglChooseConfig(EGLDisplay dpy, const EGLint *attrib_list, EGLConfig *con
+         }
+     }
+ 
+-    if (*num_config <= 0)
++    if (*num_config < 0)
+         return EGL_FALSE;
+     return EGL_TRUE;
+ }
